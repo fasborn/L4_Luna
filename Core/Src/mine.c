@@ -1,5 +1,7 @@
 
 #include "mine.h"
+#include "usart.h"
+#include "stm32l4xx_hal.h"
 
 /*!< USART Interrupts mask */
 #define IT_MASK                   ((uint32_t)0x000000FF)
@@ -139,13 +141,33 @@ int dist; //actual distance measurements of LiDAR
 int strength; //signal strength of LiDAR
 float temprature;
 
-void get_data(){
-   if(Serial1.read() == HEADER) { //assess data package frame header 0x59
+int get_data(uint8_t* data){
+	if(data[0] == HEADER) { //assess data package frame header 0x59
+		if (data[1] == HEADER) { //assess data package frame header 0x59
+			check = data[0] + data[1] + data[2] + data[3] + data[4] + data[5] + data[6] + data[7];
+			if (data[8] == (check & 0xff)){ //verify the received data as per protocol
+				dist = data[2] + data[3] * 256; //calculate distance value
+				strength = data[4] + data[5] * 256; //calculate signal strength value
+				temprature = data[6] + data[7] *256;//calculate chip temprature
+				temprature = temprature/8 - 256;
+				
+				return dist;
+			}
+		}
+	}
+	
+	return 0;
+}
+
+uint8_t temp;
+
+int get_data_test(UART_HandleTypeDef *huart, uint8_t* data){
+   if(HAL_UART_Receive_IT(huart, &temp, 1) == HEADER) { //assess data package frame header 0x59
      uart[0]=HEADER;
-     if (Serial1.read() == HEADER) { //assess data package frame header 0x59
+     if (HAL_UART_Receive_IT(huart, &temp, 1) == HEADER) { //assess data package frame header 0x59
        uart[1] = HEADER;
-       for (i = 2; i < 9; i++) { //save data in array
-       uart[i] = Serial1.read();
+       for (int i = 2; i < 9; i++) { //save data in array
+				uart[i] = HAL_UART_Receive_IT(huart, &temp, 1);
        }
        check = uart[0] + uart[1] + uart[2] + uart[3] + uart[4] + uart[5] + uart[6] + uart[7];
        if (uart[8] == (check & 0xff)){ //verify the received data as per protocol
@@ -163,4 +185,4 @@ void get_data(){
        }
      }
    }
- }
+}

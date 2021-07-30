@@ -90,7 +90,10 @@ int main(void)
   MX_UART4_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-	SET_BIT(huart2.Instance->CR1, USART_CR1_RXNEIE);
+//	SET_BIT(huart2.Instance->CR1, USART_CR1_RXNEIE);
+	uint8_t data[9];
+	HAL_UART_Receive_IT(&huart2, data, 9);
+	
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -138,6 +141,14 @@ int main(void)
 //	HAL_UART_Transmit(&huart4, (uint8_t*) "Hi\r\n", 4, 1000);
 //	
 //	HAL_Delay(1000);
+		if(huart2.RxXferCount==0)
+
+		{
+			HAL_UART_Transmit(&huart4, (uint8_t*) get_data(data), 1, 1000);
+			HAL_UART_Transmit(&huart4, data, 9, 1000);
+			HAL_UART_Receive_IT(&huart2, data, 9);
+		}	
+	
 
 
 		

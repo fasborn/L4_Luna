@@ -207,33 +207,35 @@ void SysTick_Handler(void)
 void USART2_IRQHandler(void)
 {
   /* USER CODE BEGIN USART2_IRQn 0 */
-		if (USART_GetITStatus(USART2, USART_ISR_RXNE)){
-			HAL_UART_Transmit(&huart4, (uint8_t*) "Hi\r\n", 4, 1000);
-		}
-	
-		if(USART2->ISR & USART_ISR_RXNE){
-			uint8_t k;
-			k	= USART2->RDR;
-//			uint16_t data;
-//			data = k & 0x1FF;
-			
-			//HAL_UART_Transmit(&huart4, (uint8_t*) data, 1, 1000);
-//			UART4->TDR = (uint8_t) data;
-			
-//			uint8_t k;// = UART4->RDR;
-			
-//			HAL_UART_Receive(&huart2, &k, 1, 1000);
-			HAL_UART_Transmit(&huart4, &k, 1, 1000);
-			HAL_UART_Transmit(&huart4, (uint8_t*) "\r\n", 2, 1000);
-		}		
-		
-	HAL_UART_Transmit(&huart4, (uint8_t*) "H", 1, 1000);
+//		if (USART_GetITStatus(USART2, USART_ISR_RXNE)){
+//			HAL_UART_Transmit(&huart4, (uint8_t*) "Hi\r\n", 4, 1000);
+//		}
+//	
+//		if(USART2->ISR & USART_ISR_RXNE){
+//			uint8_t k;
+//			k	= USART2->RDR;
+////			uint16_t data;
+////			data = k & 0x1FF;
+//			
+//			//HAL_UART_Transmit(&huart4, (uint8_t*) data, 1, 1000);
+////			UART4->TDR = (uint8_t) data;
+//			
+////			uint8_t k;// = UART4->RDR;
+//			
+////			HAL_UART_Receive(&huart2, &k, 1, 1000);
+//			HAL_UART_Transmit(&huart4, &k, 1, 1000);
+//			HAL_UART_Transmit(&huart4, (uint8_t*) "\r\n", 2, 1000);
+//		}		
+//		
+//	HAL_UART_Transmit(&huart4, (uint8_t*) "H", 1, 1000);
   /* USER CODE END USART2_IRQn 0 */
-//  HAL_UART_IRQHandler(&huart2);
+  HAL_UART_IRQHandler(&huart2);
   /* USER CODE BEGIN USART2_IRQn 1 */
 
   /* USER CODE END USART2_IRQn 1 */
 }
+
+
 
 /* USER CODE BEGIN 1 */
 
