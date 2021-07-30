@@ -143,7 +143,7 @@ float temprature;
 
 int get_data(uint8_t* data){
 	if(data[0] == HEADER) { //assess data package frame header 0x59
-		if (data[1] == HEADER) { //assess data package frame header 0x59
+		if (data[1] == HEADER){ //assess data package frame header 0x59
 			check = data[0] + data[1] + data[2] + data[3] + data[4] + data[5] + data[6] + data[7];
 			if (data[8] == (check & 0xff)){ //verify the received data as per protocol
 				dist = data[2] + data[3] * 256; //calculate distance value
@@ -155,34 +155,45 @@ int get_data(uint8_t* data){
 			}
 		}
 	}
-	
 	return 0;
 }
 
 uint8_t temp;
 
-int get_data_test(UART_HandleTypeDef *huart, uint8_t* data){
-   if(HAL_UART_Receive_IT(huart, &temp, 1) == HEADER) { //assess data package frame header 0x59
-     uart[0]=HEADER;
-     if (HAL_UART_Receive_IT(huart, &temp, 1) == HEADER) { //assess data package frame header 0x59
-       uart[1] = HEADER;
-       for (int i = 2; i < 9; i++) { //save data in array
-				uart[i] = HAL_UART_Receive_IT(huart, &temp, 1);
-       }
-       check = uart[0] + uart[1] + uart[2] + uart[3] + uart[4] + uart[5] + uart[6] + uart[7];
-       if (uart[8] == (check & 0xff)){ //verify the received data as per protocol
-         dist = uart[2] + uart[3] * 256; //calculate distance value
-         strength = uart[4] + uart[5] * 256; //calculate signal strength value
-         temprature = uart[6] + uart[7] *256;//calculate chip temprature
-         temprature = temprature/8 - 256;
-         Serial.print("dist = ");
-         Serial.print(dist); //output measure distance value of LiDAR
-         Serial.print('\t');Serial.print("strength = ");
-         Serial.print(strength); //output signal strength value
-         Serial.print("\t Chip Temprature = ");
-         Serial.print(temprature);
-         Serial.println(" celcius degree"); //output chip temperature of Lidar
-       }
-     }
-   }
+//int get_data_test(UART_HandleTypeDef *huart, uint8_t* data){
+//   if(HAL_UART_Receive_IT(huart, &temp, 1) == HEADER) { //assess data package frame header 0x59
+//     uart[0]=HEADER;
+//     if (HAL_UART_Receive_IT(huart, &temp, 1) == HEADER) { //assess data package frame header 0x59
+//       uart[1] = HEADER;
+//       for (int i = 2; i < 9; i++) { //save data in array
+//				uart[i] = HAL_UART_Receive_IT(huart, &temp, 1);
+//       }
+//       check = uart[0] + uart[1] + uart[2] + uart[3] + uart[4] + uart[5] + uart[6] + uart[7];
+//       if (uart[8] == (check & 0xff)){ //verify the received data as per protocol
+//         dist = uart[2] + uart[3] * 256; //calculate distance value
+//         strength = uart[4] + uart[5] * 256; //calculate signal strength value
+//         temprature = uart[6] + uart[7] *256;//calculate chip temprature
+//         temprature = temprature/8 - 256;
+//         Serial.print("dist = ");
+//         Serial.print(dist); //output measure distance value of LiDAR
+//         Serial.print('\t');Serial.print("strength = ");
+//         Serial.print(strength); //output signal strength value
+//         Serial.print("\t Chip Temprature = ");
+//         Serial.print(temprature);
+//         Serial.println(" celcius degree"); //output chip temperature of Lidar
+//       }
+//     }
+//   }
+//}
+
+uint8_t t_data[9];
+
+HAL_StatusTypeDef newos(void){
+  while(1){
+    HAL_UART_Receive(&huart2, t_data, 2, 1000);
+		while(huart2.RxXferCount>0){};
+    if((t_data[0] == HEADER) && (t_data[1] == HEADER)){
+      return HAL_UART_Receive(&huart2, t_data, 7, 1000);
+    }
+  }
 }

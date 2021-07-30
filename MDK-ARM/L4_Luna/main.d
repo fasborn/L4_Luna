@@ -34,3 +34,4 @@ l4_luna\main.o: ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h
 l4_luna\main.o: ../Core/Inc/usart.h
 l4_luna\main.o: ../Core/Inc/gpio.h
 l4_luna\main.o: ../Core/Inc/mine.h
+l4_luna\main.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

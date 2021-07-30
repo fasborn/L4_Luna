@@ -25,7 +25,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <string.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -92,8 +92,10 @@ int main(void)
   /* USER CODE BEGIN 2 */
 //	SET_BIT(huart2.Instance->CR1, USART_CR1_RXNEIE);
 	uint8_t data[9];
+	//HAL_UART_Receive_IT(&huart2, data, 9);
+	newos();
 	HAL_UART_Receive_IT(&huart2, data, 9);
-	
+	uint8_t data_2[9];
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -144,14 +146,29 @@ int main(void)
 		if(huart2.RxXferCount==0)
 
 		{
-			HAL_UART_Transmit(&huart4, (uint8_t*) get_data(data), 1, 1000);
+//			strncpy(data_2, data, 9);
+			//HAL_UART_Transmit(&huart4, (uint8_t*) get_data(data), 1, 1000);
 			HAL_UART_Transmit(&huart4, data, 9, 1000);
+//			uint8_t k = j&0xff;
+			//uint8_t j = 0;// = data[0] + data[1] + data[2] + data[3] + data[4] + data[5] + data[6] + data[7];
+
+
+			
+//			for(int i = 0; i<8; i++){
+////				HAL_UART_Transmit(&huart4, &data[i], 1, 1000);
+//				j+=data[i];
+////				k = j&0xff;
+////				HAL_UART_Transmit(&huart4, &k, 1, 1000);
+//			}
+			int j = 0;
+			j = data[0] + data[1] + data[2] + data[3] + data[4] + data[5] + data[6] + data[7];
+			uint8_t k = 0;
+			k = j&0xff;			
+			HAL_UART_Transmit(&huart4, &k, 1, 1000);			
+//			HAL_UART_Transmit(&huart4, (uint8_t*) (j&0xff00)>>, 1, 1000);
+//			HAL_UART_Transmit(&huart4, (uint8_t*) k, 1, 1000);
 			HAL_UART_Receive_IT(&huart2, data, 9);
-		}	
-	
-
-
-		
+		}
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

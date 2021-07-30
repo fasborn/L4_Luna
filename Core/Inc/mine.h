@@ -8,4 +8,6 @@ void USART_ITConfig(USART_TypeDef* USARTx, uint32_t USART_IT, FunctionalState Ne
 
 int get_data(uint8_t* data);
 
+HAL_StatusTypeDef newos(void);
+
 #endif
