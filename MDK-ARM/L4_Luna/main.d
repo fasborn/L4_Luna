@@ -29,9 +29,12 @@ l4_luna\main.o: ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_i2c.h
 l4_luna\main.o: ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_i2c_ex.h
 l4_luna\main.o: ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr.h
 l4_luna\main.o: ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr_ex.h
+l4_luna\main.o: ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim.h
+l4_luna\main.o: ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h
 l4_luna\main.o: ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h
 l4_luna\main.o: ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h
+l4_luna\main.o: ../Core/Inc/dma.h
+l4_luna\main.o: ../Core/Inc/tim.h
 l4_luna\main.o: ../Core/Inc/usart.h
 l4_luna\main.o: ../Core/Inc/gpio.h
-l4_luna\main.o: ../Core/Inc/mine.h
 l4_luna\main.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
