@@ -148,7 +148,7 @@ int main(void)
 		{
 //			strncpy(data_2, data, 9);
 			//HAL_UART_Transmit(&huart4, (uint8_t*) get_data(data), 1, 1000);
-			HAL_UART_Transmit(&huart4, data, 9, 1000);
+//			HAL_UART_Transmit(&huart4, data, 9, 1000);
 //			uint8_t k = j&0xff;
 			//uint8_t j = 0;// = data[0] + data[1] + data[2] + data[3] + data[4] + data[5] + data[6] + data[7];
 
@@ -163,8 +163,18 @@ int main(void)
 			int j = 0;
 			j = data[0] + data[1] + data[2] + data[3] + data[4] + data[5] + data[6] + data[7];
 			uint8_t k = 0;
-			k = j&0xff;			
-			HAL_UART_Transmit(&huart4, &k, 1, 1000);			
+			k = j&0xff;
+			
+			int os = 0;
+
+			os = get_data(data);
+			
+			uint8_t left = os>>8;
+			uint8_t right = os & 0xff;
+			
+//			HAL_UART_Transmit(&huart4, &k, 1, 1000);
+//			HAL_UART_Transmit(&huart4, &left, 1, 1000);
+			HAL_UART_Transmit(&huart4, &right, 1, 1000);
 //			HAL_UART_Transmit(&huart4, (uint8_t*) (j&0xff00)>>, 1, 1000);
 //			HAL_UART_Transmit(&huart4, (uint8_t*) k, 1, 1000);
 			HAL_UART_Receive_IT(&huart2, data, 9);

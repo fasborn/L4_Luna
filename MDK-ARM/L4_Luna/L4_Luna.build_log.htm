@@ -28,13 +28,17 @@ Project File Date:  07/30/2021
 *** Using Compiler 'V5.06 update 7 (build 960)', folder: 'D:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'L4_Luna'
 compiling main.c...
+../Core/Src/main.c(165): warning:  #550-D: variable "k"  was set but never used
+  			uint8_t k = 0;
+../Core/Src/main.c(172): warning:  #177-D: variable "left"  was declared but never referenced
+  			uint8_t left = os>>8;
 ../Core/Src/main.c(98): warning:  #177-D: variable "data_2"  was declared but never referenced
   	uint8_t data_2[9];
-../Core/Src/main.c: 1 warning, 0 errors
+../Core/Src/main.c: 3 warnings, 0 errors
 linking...
-Program Size: Code=8544 RO-data=496 RW-data=36 ZI-data=1300  
+Program Size: Code=8604 RO-data=496 RW-data=40 ZI-data=1304  
 FromELF: creating hex file...
-"L4_Luna\L4_Luna.axf" - 0 Error(s), 1 Warning(s).
+"L4_Luna\L4_Luna.axf" - 0 Error(s), 3 Warning(s).
 
 <h2>Software Packages used:</h2>
 
