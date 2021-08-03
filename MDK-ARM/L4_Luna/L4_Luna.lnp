@@ -3,7 +3,6 @@
 "l4_luna\mine.o"
 "l4_luna\main.o"
 "l4_luna\gpio.o"
-"l4_luna\dma.o"
 "l4_luna\tim.o"
 "l4_luna\usart.o"
 "l4_luna\stm32l4xx_it.o"
