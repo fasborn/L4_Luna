@@ -37,3 +37,4 @@ l4_luna\main.o: ../Core/Inc/tim.h
 l4_luna\main.o: ../Core/Inc/usart.h
 l4_luna\main.o: ../Core/Inc/gpio.h
 l4_luna\main.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+l4_luna\main.o: ../Core/Inc/mine.h

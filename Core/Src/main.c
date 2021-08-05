@@ -26,6 +26,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <string.h>
+#include <mine.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -89,103 +90,59 @@ int main(void)
   MX_GPIO_Init();
   MX_UART4_Init();
   MX_USART2_UART_Init();
-  MX_TIM2_Init();
+//  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
-//	SET_BIT(huart2.Instance->CR1, USART_CR1_RXNEIE);
+	
+//	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
+
 	uint8_t data[9];
-	//HAL_UART_Receive_IT(&huart2, data, 9);
-	//newos();
-	//HAL_UART_Receive_IT(&huart2, data, 9);
-	uint8_t data_2[9];
-	
-	
-	//HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
-	HAL_TIM_PWM_Start_IT(&htim2, TIM_CHANNEL_1);
+	newos();
+	HAL_UART_Receive_IT(&huart2, data, 9);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-//	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
   while (1)
   {
-//		HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
-		#ifdef TEST_1
-		if(UART4->ISR&USART_ISR_RXNE){
-//			int k;
-//			k	= UART4->RDR;
-//			uint16_t data;
-//			data = k & 0x1FF;
-//			
-//			//HAL_UART_Transmit(&huart4, (uint8_t*) data, 1, 1000);
-//			UART4->TDR = k;
-			
-			uint8_t k;// = UART4->RDR;
-			
-			HAL_UART_Receive(&huart4, &k, 1, 1000);
-			HAL_UART_Transmit(&huart4, &k, 1, 1000);
-			HAL_UART_Transmit(&huart4, (uint8_t*) "Hi\r\n", 4, 1000);
-//			HAL_Delay(1000);	
-		}
-		
-		#endif
-		
-		#ifdef TEST_3
-		if(USART2->ISR&USART_ISR_RXNE){
-			uint8_t k;
-			k	= USART2->RDR;
-//			uint16_t data;
-//			data = k & 0x1FF;
-			
-			//HAL_UART_Transmit(&huart4, (uint8_t*) data, 1, 1000);
-//			UART4->TDR = (uint8_t) data;
-			
-//			uint8_t k;// = UART4->RDR;
-			
-//			HAL_UART_Receive(&huart2, &k, 1, 1000);
-			HAL_UART_Transmit(&huart4, &k, 1, 1000);
-			HAL_UART_Transmit(&huart4, (uint8_t*) "\r\n", 2, 1000);
-		}
-	#endif
-	
-//	HAL_UART_Transmit(&huart4, (uint8_t*) "Hi\r\n", 4, 1000);
-//	
-//	HAL_Delay(1000);
+
 		if(huart2.RxXferCount==0)
-
 		{
-//			strncpy(data_2, data, 9);
-			//HAL_UART_Transmit(&huart4, (uint8_t*) get_data(data), 1, 1000);
-//			HAL_UART_Transmit(&huart4, data, 9, 1000);
-//			uint8_t k = j&0xff;
-			//uint8_t j = 0;// = data[0] + data[1] + data[2] + data[3] + data[4] + data[5] + data[6] + data[7];
+//			int j = 0;
+//			j = data[0] + data[1] + data[2] + data[3] + data[4] + data[5] + data[6] + data[7];
+//			uint8_t k = 0;
+//			k = j&0xff;
+//			
+//			int os = 0;
 
-
+//			os = get_data(data);
+//			
+//			uint8_t left = os>>8;
+//			uint8_t right = os & 0xff;
 			
-//			for(int i = 0; i<8; i++){
-////				HAL_UART_Transmit(&huart4, &data[i], 1, 1000);
-//				j+=data[i];
-////				k = j&0xff;
-////				HAL_UART_Transmit(&huart4, &k, 1, 1000);
-//			}
+			//HAL_UART_Transmit(&huart4, &right, 1, 1000);
+			//HAL_UART_Receive_IT(&huart2, data, 9);
+
 			int j = 0;
 			j = data[0] + data[1] + data[2] + data[3] + data[4] + data[5] + data[6] + data[7];
 			uint8_t k = 0;
 			k = j&0xff;
 			
+			
 			int os = 0;
 
 			os = get_data(data);
-			
+
 			uint8_t left = os>>8;
 			uint8_t right = os & 0xff;
-			
-//			HAL_UART_Transmit(&huart4, &k, 1, 1000);
-//			HAL_UART_Transmit(&huart4, &left, 1, 1000);
+
+
+			//HAL_UART_Transmit(&huart4, &k, 1, 1000);
 			HAL_UART_Transmit(&huart4, &right, 1, 1000);
-//			HAL_UART_Transmit(&huart4, (uint8_t*) (j&0xff00)>>, 1, 1000);
-//			HAL_UART_Transmit(&huart4, (uint8_t*) k, 1, 1000);
 			HAL_UART_Receive_IT(&huart2, data, 9);
+			//HAL_UART_Transmit(&huart4, data, 9, 1000);
+			//HAL_Delay(1000);
 		}
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -209,7 +166,13 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
+  RCC_OscInitStruct.PLL.PLLM = 1;
+  RCC_OscInitStruct.PLL.PLLN = 10;
+  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV7;
+  RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV2;
+  RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV2;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();
@@ -218,12 +181,12 @@ void SystemClock_Config(void)
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_4) != HAL_OK)
   {
     Error_Handler();
   }
