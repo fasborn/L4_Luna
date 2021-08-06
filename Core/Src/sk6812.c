@@ -134,3 +134,11 @@ void fill_buffer(int color, uint16_t lower, uint16_t upper){
 		BUF_DMA[i] = LOW;
 	}
 }
+
+float get_position(float l_position){
+  float pos = l_position;
+  if(pos>4.0){
+    pos = 4.0;
+  }
+  return LED_COUNT*(pos/4.0);
+}

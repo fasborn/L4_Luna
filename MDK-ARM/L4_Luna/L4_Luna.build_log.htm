@@ -27,11 +27,16 @@ Project File Date:  08/05/2021
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 7 (build 960)', folder: 'D:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'L4_Luna'
-compiling main.c...
+compiling sk6812.c...
+..\Core\Src\sk6812.c(140): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+    if(pos>4.0){
+..\Core\Src\sk6812.c(143): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+    return LED_COUNT*(pos/4.0);
+..\Core\Src\sk6812.c: 2 warnings, 0 errors
 linking...
-Program Size: Code=11812 RO-data=496 RW-data=16 ZI-data=40352  
+Program Size: Code=13928 RO-data=496 RW-data=40 ZI-data=40360  
 FromELF: creating hex file...
-"L4_Luna\L4_Luna.axf" - 0 Error(s), 0 Warning(s).
+"L4_Luna\L4_Luna.axf" - 0 Error(s), 2 Warning(s).
 
 <h2>Software Packages used:</h2>
 

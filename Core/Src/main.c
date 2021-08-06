@@ -59,7 +59,9 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-#define TEST_4
+#define TEST_5
+
+uint8_t rate[] = {0x5a, 0x06, 0x03, 0x32, 0x00, 0x00};
 
 int leds(int i, int number){
   if ((i+number)<0){
@@ -117,12 +119,23 @@ int main(void)
 
 
 #ifdef TEST_3
+
+	//HAL_UART_Transmit(&huart2, rate, 6, 1000);
+	
+	HAL_UART_Transmit(&huart4, "Hi\r\n", 4, 1000);
+
 	uint8_t data[9];
 	newos();
 	HAL_UART_Receive_IT(&huart2, data, 9);
 
 #endif
 
+#ifdef TEST_5
+	uint8_t data[9];
+	newos();
+	HAL_UART_Receive_IT(&huart2, data, 9);
+
+#endif
 
   /* USER CODE END 2 */
 
@@ -217,11 +230,34 @@ int main(void)
 			uint8_t left = os>>8;
 			uint8_t right = os & 0xff;
 
-
-
 			HAL_UART_Transmit(&huart4, &right, 1, 1000);
 			HAL_UART_Receive_IT(&huart2, data, 9);
 		}
+		#endif
+		
+		#ifdef TEST_5
+		
+		if(huart2.RxXferCount==0)
+		{
+			int os = 0;
+
+			os = get_data(data);
+
+			uint8_t left = os>>8;
+			uint8_t right = os & 0xff;
+
+			float temp = get_position(os/100.0);
+			int to_fill = (int) temp;
+			
+		
+			HAL_UART_Transmit(&huart4, &right, 1, 1000);
+			HAL_UART_Receive_IT(&huart2, data, 9);
+			
+			fill_buffer(0x0F000000, leds(to_fill, -1),  leds(to_fill, +1));
+			HAL_TIM_PWM_Start_DMA(&htim2, TIM_CHANNEL_2, BUF_DMA, (ARRAY_LEN*2)+130);		
+		}		
+		
+
 		#endif
 
     /* USER CODE END WHILE */

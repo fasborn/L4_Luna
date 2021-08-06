@@ -38,6 +38,7 @@
 
 
 void fill_buffer(int color, uint16_t lower, uint16_t upper);
+float get_position(float l_position);
 
 /* USER CODE BEGIN Prototypes */
 

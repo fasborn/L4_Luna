@@ -3,7 +3,6 @@
 #include "usart.h"
 #include "stm32l4xx_hal.h"
 
-
 int HEADER=0x59; //frame header of data package
 int uart[9]; //save data measured by LiDAR
 int check = 0; //save check value
