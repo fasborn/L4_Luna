@@ -59,7 +59,7 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-#define TEST_2
+#define TEST_4
 
 int leds(int i, int number){
   if ((i+number)<0){
@@ -108,16 +108,48 @@ int main(void)
 	
 //	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
 
+#ifdef TEST_1
 	uint8_t data[9];
 	newos();
 	HAL_UART_Receive_IT(&huart2, data, 9);
+
+#endif
+
+
+#ifdef TEST_3
+	uint8_t data[9];
+	newos();
+	HAL_UART_Receive_IT(&huart2, data, 9);
+
+#endif
+
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+	
+	
+//	for(int i = 0; i<ARRAY_LEN; i++){
+//		BUF_DMA[i] = 0;
+//	}
+	
+//	fill_buffer(0x01000000, 0,  1);
+//	HAL_TIM_PWM_Start_DMA(&htim2, TIM_CHANNEL_2, BUF_DMA, (ARRAY_LEN*2)+130);		
+//	HAL_Delay(12);
+//	
+//	fill_buffer(0x01000000, 1,  2);
+//	HAL_TIM_PWM_Start_DMA(&htim2, TIM_CHANNEL_2, BUF_DMA, (ARRAY_LEN*2)+1);		
+//	HAL_Delay(12);
+//	
+//	fill_buffer(0x01000000, 2,  3);
+//	HAL_TIM_PWM_Start_DMA(&htim2, TIM_CHANNEL_2, BUF_DMA, (ARRAY_LEN*2)+1);		
+//	HAL_Delay(12);	
+	
   while (1)
   {
 
+		#ifdef TEST_1
 		if(huart2.RxXferCount==0)
 		{
 //			int j = 0;
@@ -155,6 +187,42 @@ int main(void)
 			//HAL_UART_Transmit(&huart4, data, 9, 1000);
 			//HAL_Delay(1000);
 		}
+		#endif
+		
+		#ifdef TEST_2
+		for (int yas = 0; yas < LED_COUNT; yas++ ) {
+			
+			fill_buffer(0x01000000, leds(yas, -20),  leds(yas, +20));
+			HAL_TIM_PWM_Start_DMA(&htim2, TIM_CHANNEL_2, BUF_DMA, 19329);		
+			HAL_Delay(12);
+		}
+		#endif
+		
+		#ifdef TEST_4
+		for (int yas = 0; yas < LED_COUNT; yas++ ) {
+			
+			fill_buffer(0x0F000000, leds(yas, -1),  leds(yas, +1));
+			HAL_TIM_PWM_Start_DMA(&htim2, TIM_CHANNEL_2, BUF_DMA, (ARRAY_LEN*2)+130);		
+			HAL_Delay(60);
+		}
+		#endif		
+		
+		#ifdef TEST_3
+		if(huart2.RxXferCount==0)
+		{
+			int os = 0;
+
+			os = get_data(data);
+
+			uint8_t left = os>>8;
+			uint8_t right = os & 0xff;
+
+
+
+			HAL_UART_Transmit(&huart4, &right, 1, 1000);
+			HAL_UART_Receive_IT(&huart2, data, 9);
+		}
+		#endif
 
     /* USER CODE END WHILE */
 
