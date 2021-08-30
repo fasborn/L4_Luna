@@ -59,7 +59,7 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-#define TEST_5
+#define TEST_8
 
 uint8_t rate[] = {0x5a, 0x06, 0x03, 0x32, 0x00, 0x00};
 
@@ -158,9 +158,24 @@ int main(void)
 //	fill_buffer(0x01000000, 2,  3);
 //	HAL_TIM_PWM_Start_DMA(&htim2, TIM_CHANNEL_2, BUF_DMA, (ARRAY_LEN*2)+1);		
 //	HAL_Delay(12);	
+
+		#ifdef TEST_6
+		
+			fill_buffer(0xFF000000, 0,  5);
+			HAL_TIM_PWM_Start_DMA(&htim2, TIM_CHANNEL_2, BUF_DMA, (ARRAY_LEN*2)+130);
+		#endif
+	
+//	uint32_t i = 0;
 	
   while (1)
   {
+//			i+=10;
+//			fill_buffer(0x0000FF00, 0,  297);
+//			HAL_TIM_PWM_Start_DMA(&htim2, TIM_CHANNEL_2, BUF_DMA, (ARRAY_LEN*2)+130);
+//			HAL_Delay(100);
+//			if (i >= (0xFFFFFFFF - 0x12C)){
+//				i = 0;
+//			}
 
 		#ifdef TEST_1
 		if(huart2.RxXferCount==0)
@@ -214,9 +229,11 @@ int main(void)
 		#ifdef TEST_4
 		for (int yas = 0; yas < LED_COUNT; yas++ ) {
 			
-			fill_buffer(0x0F000000, leds(yas, -1),  leds(yas, +1));
+			fill_buffer(0x0F0F0000, leds(yas, -2),  leds(yas, +2));
+			//fill_buffer(0x000000FF, 0,  leds(yas, -2));
+			//fill_buffer(0x000000FF, leds(yas, +2),  297);
 			HAL_TIM_PWM_Start_DMA(&htim2, TIM_CHANNEL_2, BUF_DMA, (ARRAY_LEN*2)+130);		
-			HAL_Delay(60);
+			HAL_Delay(40);
 		}
 		#endif		
 		
@@ -253,13 +270,37 @@ int main(void)
 			HAL_UART_Transmit(&huart4, &right, 1, 1000);
 			HAL_UART_Receive_IT(&huart2, data, 9);
 			
-			fill_buffer(0x0F000000, leds(to_fill, -1),  leds(to_fill, +1));
+			fill_buffer(0xFF000000, leds(to_fill, -1),  leds(to_fill, +1));
 			HAL_TIM_PWM_Start_DMA(&htim2, TIM_CHANNEL_2, BUF_DMA, (ARRAY_LEN*2)+130);		
 		}		
 		
 
 		#endif
-
+		
+		
+		#ifdef TEST_7
+			for(int i = DELAY_LEN; i<ARRAY_LEN-DELAY_LEN; i++){
+				BUF_DMA[i] = LOW;
+			}			
+			fill_led(0xFF000000, 30);
+			fill_buff_leds(0x00FF0000, 5, 15);
+			
+			fill_with_background(0xFF000000, 6, 8, 0x00FF0000);
+			
+			HAL_TIM_PWM_Start_DMA(&htim2, TIM_CHANNEL_2, BUF_DMA, (ARRAY_LEN*2)+130);			
+			HAL_Delay(40);
+		#endif
+			
+		#ifdef TEST_8
+		for (int yas = 0; yas < LED_COUNT; yas++ ) {
+			clear_buffer();
+			fill_with_background(0x0000FF00, leds(yas, -2),  leds(yas, +2), 0x000000FF);
+			//fill_buffer(0x0F0F0000, leds(yas, -2),  leds(yas, +2));
+			HAL_TIM_PWM_Start_DMA(&htim2, TIM_CHANNEL_2, BUF_DMA, (ARRAY_LEN*2)+130);		
+			HAL_Delay(40);
+		}
+		#endif			
+			
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

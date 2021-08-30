@@ -30,15 +30,19 @@
 //--------------------------------------------------
 
 #define DELAY_LEN 64
-#define LED_COUNT 300
+#define LED_COUNT 297
 #define ARRAY_LEN DELAY_LEN*2 + LED_COUNT*32
 
 #define HIGH 64
 #define LOW 36
 
 
-void fill_buffer(int color, uint16_t lower, uint16_t upper);
+void fill_buffer(uint32_t color, uint16_t lower, uint16_t upper);
 float get_position(float l_position);
+void fill_led(uint32_t color, uint16_t led);
+void fill_buff_leds(uint32_t color, uint16_t lower, uint16_t upper);
+void fill_with_background(uint32_t color, uint16_t lower, uint16_t upper, uint32_t background_color);
+void clear_buffer(void);
 
 /* USER CODE BEGIN Prototypes */
 

@@ -2,7 +2,7 @@
 
 
 uint32_t BUF_DMA [ARRAY_LEN] = {0};
-
+uint32_t BUF_LEDS [LED_COUNT] = {0};
 /*
 OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO0NWN0OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO0XWN0OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO0NWN0OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO0XWNKOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOXWWKOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOXWWNKOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOKWWXOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOKNMNKKKKKKKKKKKKKKKKKKKKKKKKKKK0KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKXWWNK0KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK0KKKKKKKKKKKXWMNK0KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK00KNMWXKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK00XW
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,c0WO:,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,:OW0c,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,:0W0c,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;kWKl,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;dNXd,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;xNXOo,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,dXNd;,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,lKW0olllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllkNWOolllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllldXWKolllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllloKWKdllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllldK
@@ -79,7 +79,7 @@ struct Color{
 	uint8_t warm;
 };
 
-struct Color int_to_rgbw(int color){
+struct Color int_to_rgbw(uint32_t color){
 		
 		struct Color rgbw = {0, 0, 0, 0};
 		rgbw.green = 	(color & 0xFF000000)>>24;
@@ -90,7 +90,7 @@ struct Color int_to_rgbw(int color){
     return rgbw;
 }
 
-void get_bites(int color, uint8_t *bites){
+void get_bites(uint32_t color, uint8_t *bites){
 	struct Color rgbw = {0, 0, 0, 0};
 	rgbw = int_to_rgbw(color);
 	
@@ -114,7 +114,7 @@ uint8_t get_level(uint8_t bite){
 
 
 
-void fill_buffer(int color, uint16_t lower, uint16_t upper){
+void fill_buffer(uint32_t color, uint16_t lower, uint16_t upper){
 
 	for(int i = DELAY_LEN; i<DELAY_LEN + (lower*32); i++){
 		BUF_DMA[i] = LOW;
@@ -134,6 +134,53 @@ void fill_buffer(int color, uint16_t lower, uint16_t upper){
 		BUF_DMA[i] = LOW;
 	}
 }
+
+
+void fill_led(uint32_t color, uint16_t led){
+
+	uint8_t bites[32] = {0};
+	get_bites(color, bites);
+	
+	for(int bite = 0; bite<32; bite++){
+		BUF_DMA[DELAY_LEN + (led*32) + bite] = get_level(bites[bite]);
+	}
+
+}
+
+void fill_buff_leds(uint32_t color, uint16_t lower, uint16_t upper){
+
+	for(int i = lower; i< upper; i++){
+		fill_led(color, i);
+	}
+
+}
+
+void fill_with_background(uint32_t color, uint16_t lower, uint16_t upper, uint32_t background_color){
+
+	for(int i = 0; i< lower; i++){
+		fill_led(background_color, i);
+	}
+
+	for(int i = lower; i< upper; i++){
+		fill_led(color, i);
+	}
+
+	for(int i = upper; i< 297; i++){
+		fill_led(background_color, i);
+	}	
+	
+}
+
+void clear_buffer(void){
+	for(int i = DELAY_LEN; i<ARRAY_LEN-DELAY_LEN; i++){
+		BUF_DMA[i] = LOW;
+	}				
+}
+
+void fill_with_white_buffer(uint32_t color, uint16_t lower, uint16_t upper){
+
+}
+
 
 float get_position(float l_position){
   float pos = l_position;
